@@ -77,3 +77,67 @@ class JobListItem(BaseModel):
 class HealthOut(BaseModel):
     status: str
     service: str
+
+
+class PairSideCreate(BaseModel):
+    sampleId: int | None = None
+    fastqText: str | None = Field(default=None, alias="fastqText")
+
+    model_config = {"populate_by_name": True}
+
+
+class PairJobCreate(BaseModel):
+    r1: PairSideCreate
+    r2: PairSideCreate
+
+
+class PairStageOut(BaseModel):
+    id: int
+    side: str
+    actor_name: str
+    stage_order: int
+    status: str
+    message: str | None
+    started_at: datetime | None
+    finished_at: datetime | None
+
+    model_config = {"from_attributes": True}
+
+
+class PairJobOut(BaseModel):
+    id: int
+    status: str
+    created_by: str
+    created_at: datetime
+    finished_at: datetime | None
+    r1_sample_id: int | None
+    r1_sample_name: str
+    r1_status: str
+    r1_metrics: dict[str, Any] | None
+    r1_error: str | None
+    r2_sample_id: int | None
+    r2_sample_name: str
+    r2_status: str
+    r2_metrics: dict[str, Any] | None
+    r2_error: str | None
+    stages: list[PairStageOut] = []
+
+    model_config = {"from_attributes": True}
+
+
+class PairJobListItem(BaseModel):
+    id: int
+    status: str
+    created_by: str
+    created_at: datetime
+    finished_at: datetime | None
+    r1_sample_name: str
+    r1_status: str
+    r1_metrics: dict[str, Any] | None
+    r1_error: str | None
+    r2_sample_name: str
+    r2_status: str
+    r2_metrics: dict[str, Any] | None
+    r2_error: str | None
+
+    model_config = {"from_attributes": True}

@@ -62,4 +62,24 @@ export async function createJob(body) {
   return data
 }
 
+export async function createPairJob(body) {
+  const { data } = await api.post('/pairs', body)
+  return data
+}
+
+export async function listPairJobs() {
+  const { data } = await api.get('/pairs')
+  return data
+}
+
+export async function getPairJob(id) {
+  const { data } = await api.get(`/pairs/${id}`)
+  return data
+}
+
+export async function getPairJobStages(id) {
+  const { data } = await api.get(`/pairs/${id}/stages`)
+  return data
+}
+
 export default api

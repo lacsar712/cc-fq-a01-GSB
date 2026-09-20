@@ -20,3 +20,7 @@ Thumbs.db
 # Env
 .env
 .env.local
+
+# Local test / smoke databases
+backend/fastq_qc_test.db
+backend/smoke.db
