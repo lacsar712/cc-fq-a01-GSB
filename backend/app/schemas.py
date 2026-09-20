@@ -33,6 +33,18 @@ class JobCreate(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class PairSideInput(BaseModel):
+    sampleId: int | None = Field(default=None, alias="sampleId")
+    fastqText: str | None = Field(default=None, alias="fastqText")
+
+    model_config = {"populate_by_name": True}
+
+
+class PairRunCreate(BaseModel):
+    r1: PairSideInput
+    r2: PairSideInput
+
+
 class StageOut(BaseModel):
     id: int
     actor_name: str
@@ -55,6 +67,8 @@ class JobOut(BaseModel):
     error_message: str | None
     created_at: datetime
     finished_at: datetime | None
+    pair_id: int | None = None
+    pair_side: str | None = None
     stages: list[StageOut] = []
 
     model_config = {"from_attributes": True}
@@ -68,6 +82,48 @@ class JobListItem(BaseModel):
     created_by: str
     metrics: dict[str, Any] | None
     error_message: str | None
+    created_at: datetime
+    finished_at: datetime | None
+    pair_side: str | None = None
+
+    model_config = {"from_attributes": True}
+
+
+class PairSideOut(BaseModel):
+    side: str
+    sample_name: str
+    sample_id: int | None
+    status: str
+    metrics: dict[str, Any] | None
+    error_message: str | None
+    stages: list[StageOut] = []
+
+    model_config = {"from_attributes": True}
+
+
+class PairRunOut(BaseModel):
+    id: int
+    status: str
+    created_by: str
+    failed_side: str | None
+    error_message: str | None
+    created_at: datetime
+    finished_at: datetime | None
+    r1: PairSideOut | None = None
+    r2: PairSideOut | None = None
+
+    model_config = {"from_attributes": True}
+
+
+class PairRunListItem(BaseModel):
+    id: int
+    status: str
+    created_by: str
+    failed_side: str | None
+    r1_name: str
+    r2_name: str
+    r1_status: str | None = None
+    r2_status: str | None = None
     created_at: datetime
     finished_at: datetime | None
 
